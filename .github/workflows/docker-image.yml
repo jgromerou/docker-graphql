@@ -19,11 +19,11 @@ jobs:
         fetch-depth: 0
     
     - name: Git Semantic Version
-      uses: PaulHatch/semantic-version@v4.0.3
+      uses: PaulHatch/semantic-version@v5.4.0
       with:
-        major_pattern: "major:"
-        minor_pattern: "feat:"
-        patch_pattern: "fix:"
+        major_pattern: "(MAJOR)"
+        minor_pattern: "(MINOR)"
+        patch_pattern: "(FIX)"
         format: "${major}.${minor}.${patch}"
         pre_release_format: "${major}.${minor}.${patch}-prerelease${increment}"
       id: version
@@ -49,14 +49,3 @@ jobs:
 #      run: |
 #        docker push gerardoromerou/docker-graphql:$NEW_VERSION
 #        docker push gerardoromerou/docker-graphql:latest
-      
-    
-    
-    
-    
-    
-    
-    
-    
-#     - name: Build the Docker image
-#       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
