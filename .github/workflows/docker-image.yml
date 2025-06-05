@@ -14,37 +14,48 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    
     - name: Git Semantic Version
       uses: PaulHatch/semantic-version@v4.0.3
       with:
-        minor_pattern: "feat(\\(.*\\))?:"
-        patch_pattern: "fix(\\(.*\\))?:"
-        major_pattern: "major(\\(.*\\))?:"
+        major_pattern: "major:"
+        minor_pattern: "feat:"
+        patch_pattern: "fix:"
         format: "${major}.${minor}.${patch}-prerelease${increment}"
       id: version
-        
-    - name: Docker login
+    
+    - name: Docker Login
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        NEW_VERSION: ${{ steps.version.outputs.version }}
       run: |
-        echo "Iniciando login"
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-        echo "Fin del login"
-
-    - name: Build Docker Image
-      env:
-        NEW_VERSION: ${{ steps.version.outputs.version }}
-      run: |
-        docker build -t gerardoromerou/docker-graphql:$NEW_VERSION .
-        docker build -t gerardoromerou/docker-graphql:latest .
-
-    - name: Push Docker Image
-      env:
-        NEW_VERSION: ${{ steps.version.outputs.version }}
-      run: |
-        docker push gerardoromerou/docker-graphql:$NEW_VERSION
-        docker push gerardoromerou/docker-graphql:latest
+        echo $NEW_VERSION!!!!!!
+#    - name: Build Docker Image
+#      env:
+#        NEW_VERSION: ${{ steps.version.outputs.version }}
+#      run: |
+#        docker build -t gerardoromerou/docker-graphql:$NEW_VERSION .
+#        docker build -t gerardoromerou/docker-graphql:latest .
+        
+#    - name: Push Docker Image
+#      env:
+#        NEW_VERSION: ${{ steps.version.outputs.version }}
+#      run: |
+#        docker push gerardoromerou/docker-graphql:$NEW_VERSION
+#        docker push gerardoromerou/docker-graphql:latest
+      
+    
+    
+    
+    
+    
+    
+    
+    
+#     - name: Build the Docker image
+#       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
